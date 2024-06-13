@@ -4,18 +4,18 @@ import tensorflow as tf
 import imageio.v3 as iio
 from pathlib import Path
 
-
-
 class_names = ['animal_crossing', 'doom']
 
 def init_model():
-    return tf.keras.models.load_model('doomcrossing_tfv1.keras')
+    return tf.keras.models.load_model('doomcrossing_tfv2.keras')
 
 def read_image_dir():
     images = []
+    scaled_images = []
     file_names = []
     file_order = []
 
+    # obtain the frames of the video somehow
     for file in Path("./eternal-horizons-frames").iterdir():
         if not file.is_file():
             continue
@@ -29,18 +29,17 @@ def read_image_dir():
     indexes = file_numpy.argsort()
     file_names = file_names[indexes]
 
-    for i in range(10):
-        print(f"index: {indexes[i]} , f: {file_names[i]}")
-
-
     for file in file_names:
         if not file.is_file():
             continue
         img = iio.imread(file)
-        img = np.expand_dims(img, axis=0)
+        scaled_img = cv2.resize(img, dsize=(224, 224), interpolation=cv2.INTER_CUBIC)
+        scaled_img = np.expand_dims(scaled_img, axis=0)
+
+        scaled_images.append(scaled_img)
         images.append(img)
 
-    return images
+    return (images, scaled_images)
 
 def predict_frame(model, frame) -> str:
     if not model:
@@ -54,22 +53,22 @@ def predict_frame(model, frame) -> str:
 
 
 font                   = cv2.FONT_HERSHEY_SIMPLEX
-bottomLeftCornerOfText = (5,200)
-fontScale              = 0.5
+bottomLeftCornerOfText = (25,1040)
+fontScale              = 2
 fontColor              = (20,20,225)
-thickness              = 2
+thickness              = 4
 lineType               = 2
 
 def predict_to_video(video_name):
     model = init_model()
-    images = read_image_dir()
+    images, scaled_images = read_image_dir()
 
     predicted_images = [
         (frame.squeeze(), predict_frame(model, frame))
-        for frame in images
+        for frame in scaled_images
     ]
 
-    for (im, lb) in predicted_images:
+    for ((pim, lb), im)  in zip(predicted_images, images):
         im = cv2.putText(im, lb, 
             bottomLeftCornerOfText, 
             font, 
@@ -77,15 +76,16 @@ def predict_to_video(video_name):
             fontColor,
             thickness,
             lineType) 
-    height, width, layers = predicted_images[0][0].shape
-    video = cv2.VideoWriter(filename=video_name, fourcc=0, frameSize=(width, height), fps=30)
 
-    for (image, _) in predicted_images:
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    height, width = 1080, 1920
+    video = cv2.VideoWriter(filename=video_name, fourcc=fourcc, frameSize=(width, height), fps=30)
+
+    for image in images:
         video.write(image)
 
+    print("Render complete.")
     cv2.destroyAllWindows()
     video.release()
 
 predict_to_video('output.mp4')
-
-# ffmpeg -i "DOOM CROSSING - Eternal Horizons.webm" -q:a 0 -map a eternal_horizons_audio.mp3
