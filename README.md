@@ -19,3 +19,15 @@ We also put it to test by predicting the [DOOM CROSSING: Eternal Horizons](https
 <p align="center" >
   <img src= "https://github.com/beyza1tozman/doom_crossing_project/blob/main/gifs/DCEH%20-%20we%20are%20one.gif" alt="we are one" width=480 height=320  /> 
 </p>
+
+
+## Learning Curves
+The following plots show the training and validation accuracy and loss of MobileNetV2 during feature extraction and fine-tuning over epochs.
+
+### MobileNetV2 Feature Extraction - Training and Validation Accuracy 
+![Training and Validation Accuracy](https://github.com/beyza1tozman/doom_crossing_project/assets/104080203/be88d179-860c-4706-9688-793d3c87d1dd)
+
+### MobileNetV2 Fine Tuning - Training and Validation Accuracy 
+![Training and Validation Loss](https://github.com/beyza1tozman/doom_crossing_project/assets/104080203/1184409d-c7fd-46b9-b92b-b25085c35554)
+
+Final Test Accuracy: 0.8950892686843872
