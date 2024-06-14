@@ -24,11 +24,16 @@ We also put it to test by predicting the [DOOM CROSSING: Eternal Horizons](https
 ## Learning Curves
 The following plots show the training and validation accuracy, loss of MobileNetV2 during feature extraction and fine-tuning.
 
-<img src="https://github.com/beyza1tozman/doom_crossing_project/assets/104080203/be88d179-860c-4706-9688-793d3c87d1dd" width="400"><br>
-<small>MobileNetV2 Feature Extraction - Training and Validation Accuracy</small>
-
-<img src="https://github.com/beyza1tozman/doom_crossing_project/assets/104080203/1184409d-c7fd-46b9-b92b-b25085c35554" width="400"><br>
-<small>MobileNetV2 Fine Tuning - Training and Validation Accuracy</small>
+<div style="display: flex; justify-content: space-around;">
+    <div style="flex-basis: 45%;">
+        <img src="https://github.com/beyza1tozman/doom_crossing_project/assets/104080203/be88d179-860c-4706-9688-793d3c87d1dd" style="max-width: 100%;">
+        <p style="text-align: center;">MobileNetV2 Feature Extraction - Training and Validation Accuracy</p>
+    </div>
+    <div style="flex-basis: 45%;">
+        <img src="https://github.com/beyza1tozman/doom_crossing_project/assets/104080203/1184409d-c7fd-46b9-b92b-b25085c35554" style="max-width: 100%;">
+        <p style="text-align: center;">MobileNetV2 Fine Tuning - Training and Validation Accuracy</p>
+    </div>
+</div>
 
 Final Test Accuracy: 0.8950892686843872
 
